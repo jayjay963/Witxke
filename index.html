@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Deadly Intersections: Why Arizona’s Roads Are More Dangerous Than Ever</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text: #242424;
+    --text-soft: #6b6b6b;
+    --text-softer: #8a8a8a;
+    --bg: #ffffff;
+    --bg-soft: #fafafa;
+    --border: #e6e6e6;
+    --accent: #1a8917;
+    --accent-dark: #0f730c;
+    --max-width: 680px;
+    --serif: 'Lora', Georgia, 'Times New Roman', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Reading progress bar */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--accent);
+    z-index: 1000;
+    transition: width 0.05s linear;
+  }
+
+  /* Nav */
+  nav.site-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 900;
+  }
+  .nav-inner {
+    max-width: 1192px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo span { color: var(--text-soft); font-style: italic; font-weight: 500; }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .btn {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-ghost:hover { background: #f4f4f4; }
+  .btn-primary {
+    background: var(--text);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #000; }
+  .btn-accent {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-accent:hover { background: var(--accent-dark); }
+
+  /* Layout */
+  .page {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, var(--max-width)) 1fr;
+    gap: 0;
+    padding: 0 24px;
+  }
+
+  /* Hero */
+  .hero {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 1192px;
+    margin: 48px auto 8px;
+  }
+  .hero figure { margin: 0; }
+  .hero img {
+    width: 100%;
+    height: auto;
+    max-height: 560px;
+    object-fit: cover;
+    display: block;
+    border-radius: 2px;
+  }
+  .hero figcaption {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-softer);
+    font-style: italic;
+    margin-top: 12px;
+    font-family: var(--serif);
+  }
+
+  /* Article */
+  article.post {
+    grid-column: 2;
+    position: relative;
+    padding: 40px 0 80px;
+  }
+
+  .post-header h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 0 0 16px;
+    color: var(--text);
+  }
+  .post-header .subtitle {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.35;
+    color: var(--text-soft);
+    margin: 0 0 40px;
+    font-weight: 400;
+  }
+
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .byline img.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .byline-text { flex: 1; font-size: 14px; line-height: 1.4; }
+  .byline-text .author { font-weight: 600; color: var(--text); }
+  .byline-text .pub { color: var(--text-soft); }
+  .byline-text .meta {
+    color: var(--text-softer);
+    font-size: 13px;
+    margin-top: 2px;
+  }
+
+  /* Body copy */
+  .post-body {
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.75;
+    color: #292929;
+  }
+  .post-body p {
+    margin: 0 0 28px;
+  }
+  .post-body h2 {
+    font-family: var(--serif);
+    font-size: 30px;
+    line-height: 1.25;
+    font-weight: 700;
+    margin: 48px 0 16px;
+    letter-spacing: -0.01em;
+  }
+  .post-body h3 {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+  }
+
+  /* Drop cap */
+  .post-body p.first::first-letter {
+    font-family: var(--serif);
+    font-weight: 700;
+    float: left;
+    font-size: 76px;
+    line-height: 0.85;
+    padding: 8px 10px 0 0;
+    color: var(--text);
+  }
+
+  /* Pull quote */
+  blockquote.pull {
+    margin: 40px 0;
+    padding: 8px 0 8px 28px;
+    border-left: 4px solid var(--text);
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.5;
+    color: #1a1a1a;
+    font-family: var(--serif);
+  }
+
+  /* Section dividers */
+  .divider {
+    text-align: center;
+    margin: 48px 0;
+    color: var(--text-softer);
+    letter-spacing: 0.8em;
+    font-size: 14px;
+  }
+
+  /* Clap column */
+  .clap-rail {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    /* keep the rail outside the main wide content area (1192px) and never too close to the viewport edge */
+    left: max(24px, calc((100vw - 1192px) / 2 - 96px));
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    z-index: 50;
+  }
+  .clap-btn {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-soft);
+    transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    font-size: 20px;
+  }
+  .clap-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .clap-btn.pop { animation: pop 0.35s ease; }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+  .clap-count {
+    font-size: 12px;
+    color: var(--text-soft);
+    font-family: var(--sans);
+  }
+
+  /* Author bio */
+  .author-bio {
+    grid-column: 2;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .author-bio img {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .author-bio .info { flex: 1; }
+  .author-bio .info .written-by {
+    font-size: 13px;
+    color: var(--text-softer);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .author-bio .info h3 {
+    margin: 0 0 8px;
+    font-family: var(--serif);
+    font-size: 24px;
+  }
+  .author-bio .info p {
+    margin: 0 0 16px;
+    color: var(--text-soft);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  /* More from publication */
+  .more-from {
+    grid-column: 1 / -1;
+    max-width: 1192px;
+    margin: 64px auto 0;
+    padding: 0 0 80px;
+  }
+  .more-from h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    margin: 0 0 24px;
+    letter-spacing: -0.01em;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .card {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+  .card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+  .card .pub-small {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+  }
+  .card .pub-small .dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--text);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 600;
+  }
+  .card h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    font-weight: 700;
+  }
+  .card p {
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.5;
+    margin: 0 0 10px;
+  }
+  .card .card-meta {
+    font-size: 12px;
+    color: var(--text-softer);
+    margin-top: auto;
+  }
+
+  footer.site-footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--text-softer);
+    font-size: 13px;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .clap-rail { display: none; }
+  }
+  @media (max-width: 768px) {
+    .nav-inner { height: 56px; padding: 0 16px; }
+    .btn-ghost { display: none; }
+    .page { padding: 0 20px; }
+    .hero { margin-top: 24px; }
+    .post { padding: 28px 0 48px; }
+    .post-header h1 { font-size: 32px; }
+    .post-header .subtitle { font-size: 18px; margin-bottom: 28px; }
+    .post-body { font-size: 18px; line-height: 1.7; }
+    .post-body p.first::first-letter { font-size: 60px; }
+    blockquote.pull { font-size: 20px; padding-left: 20px; }
+    .card-grid { grid-template-columns: 1fr; gap: 28px; }
+    .more-from { margin-top: 40px; padding-bottom: 48px; }
+    .author-bio { flex-direction: column; }
+    .author-bio img { width: 72px; height: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="#" class="logo">English <span>102</span></a>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" type="button">Follow</button>
+      <button class="btn btn-primary" type="button">Subscribe</button>
+    </div>
+  </div>
+</nav>
+
+<aside class="clap-rail" aria-label="Article reactions">
+  <button class="clap-btn" id="clapBtn" type="button" aria-label="Clap for this article">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 9V5a3 3 0 0 0-6 0v7"/>
+      <path d="M8 12V8a2 2 0 1 0-4 0v7a7 7 0 0 0 14 0v-1a2 2 0 0 0-2-2h-1"/>
+      <path d="M14 12h2a2 2 0 0 0 0-4h-2"/>
+    </svg>
+  </button>
+  <span class="clap-count" id="clapCount">128</span>
+  <button class="clap-btn" type="button" aria-label="Comment">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+  <button class="clap-btn" type="button" aria-label="Save">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+</aside>
+
+<div class="page">
+
+  <figure class="hero">
+    <img src="https://www.image2url.com/r2/default/images/1776224484133-60cd046f-6d9a-444d-84ae-3ceeff8e9c55.png" alt="A quiet rain-soaked valley at first light, mist threading between dark pines." />
+    <figcaption>"Arizona has the highest rate of fatal crashes at intersections in the entire country, with five deaths 
+      <p></p>for every 100,000 Arizonans." - Archer, Garrett </figcaption>
+  </figure>
+
+  <article class="post">
+    <header class="post-header">
+      <h1>Deadly Intersections</h1>
+      <p class="subtitle">Why Arizona’s Roads Are More Dangerous Than Ever</p>
+
+      <div class="byline">
+        <img class="avatar" src="https://www.image2url.com/r2/default/images/1776223412780-9a46287c-527e-49bf-8b68-2d1b66237003.png" alt="Portrait of Wren Alcott" />
+        <div class="byline-text">
+          <div><span class="author">Jordan Dungca</span> <span class="pub">in English 102</span></div>
+          <div class="meta">9 min read · April 14, 2026</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="post-body">
+      <p> Every day, countless drivers in Arizona make their way across hazardous intersections,
+but few pay attention to the potential dangers associated with reckless driving. In recent years,
+common occurrences have become highly dangerous for many drivers in Arizona. The state now has some of the worst records in the country when it comes to fatal intersection
+accidents, which is a critical problem that must be addressed immediately (ABC15, 26). Many
+accidents have been transformed into a matter of life and death, which poses a severe threat to
+many drivers. Dangerous intersection accidents have become an increasing problem for Arizona
+due to distracted driving and unsafe roadways, creating an urgent need for action before the
+situation worsens. This issue is particularly crucial for youth drivers in Arizona, who are more
+likely to drive recklessly and irresponsibly.</p>
+
+      <blockquote class="pull">
+        Archer, Garrett. “Arizona Has Highest Rate of Fatal Intersection Crashes in the Country.” ABC15
+Arizona, 2 Jan. 2026.
+      </blockquote>
+
+      <p> One of the key reasons why accidents occur at intersections in Arizona is due to reckless
+behavior among drivers. Most drivers do not follow traffic laws, and many tend to drive
+carelessly by speeding or texting while driving. Cities such as Phoenix are characterized by a lot
+of traffic, most people become impatient on the road and might try to rush through yellow lights
+or completely disregard them. Distracted driving is also one of the key factors that contribute to
+fatal crashes at intersections in Arizona. Because of smartphones, people often get distracted
+while driving and pay less attention to the road for a brief period. This brief moment could result
+in an accident since a driver is more vulnerable to being careless when using his or her mobile
+phone (NHTSA, 24).</p>
+
+      <div class="divider" aria-hidden="true">• • •</div>
+
+      <p>  Other factors that contribute to intersection crashes include the design of the systems
+and their condition. Some Arizona intersections were not originally constructed to accommodate
+the amount of traffic they currently see. Due to rapid population growth, systems in many areas
+have lagged behind, leading to poorly designed and poorly maintained intersections. Some may
+have reduced visibility or complicated designs. Traffic lights in some places may be outdated and
+cannot regulate the movement of vehicles. Unprotected left turn signals are one of the
+many intersection features that lead to crashes, due to the inability of drivers being able to accurately respond to
+oncoming traffic. At times, insufficient signage or dim lighting may increase the dangers of
+driving through some intersections, especially at night. Data from the Arizona Department of
+Transportation indicates that Phoenix and other cities have relatively high crash rates in
+intersection areas (ADOT, 25).</p>
+
+      <blockquote class="pull">
+        Arizona Department of Transportation. 2024 Motor Vehicle Crash Facts for the State of Arizona.
+9 July 2025.</blockquote>
+
+      <p>The consequences of fatal intersection crashes have far reaching impacts. The first and
+most important consequence is the death of individuals involved in the accident. It brings the
+family of the deceased into a sudden state of mourning, causing lasting emotional distress that
+may last several years. Those who survive the incident also sustain various injuries, ranging from
+bone fractures, head injuries, and other forms of physical disabilities. Additionally, many
+accidents put a strain on public emergency services and health institutions. Medical facilities
+have to tend to the injured, while the police force and fire department respond to accidents daily.
+Such accidents bring fear and anxiety to the entire society, particularly among parents. Once our
+community starts feeling unsafe on the road, it alters their driving behavior and the way they
+travel. As per recent studies, Arizona is one of the states with the highest incidence of fatal crashes
+in the United States (ABC15, 26).<p>
+
+      <div class="divider" aria-hidden="true">• • •</div>
+
+      <p>This issue affects many more aspects of life than just individuals and their families. These
+fatal crashes can result in higher rates, legal problems, and financial problems for all parties
+involved. Communities may suffer as a result of accidents leading to the closing of roads and
+traffic delays. These occurrences will not only decrease the level of trust that people have in road
+safety but also affect it in a negative way. At this rate, Arizona may experience an increase in the
+number of fatalities, higher statistics, and the lack of road safety, which will make traveling
+around the city dangerous. Unsafe driving habits such as speeding and distracted driving are the
+leading cause of crashes across the United States (NHTSA, 24). </p>
+
+      <blockquote class="pull">
+        National Highway Traffic Safety Administration. “Distracted Driving.” U.S. Department of
+Transportation, 2024.</blockquote>
+
+        <p> This problem should not be acknowledged to discriminate against certain people, but
+rather apply to everybody who uses the road. This means that not only accident victims but all
+passengers, pedestrians, and drivers are at risk due to intersection safety concerns. Teenage
+drivers, particularly those operating their cars in busy areas such as Phoenix, must understand the
+gravity of this situation. While some may consider themselves immune to any consequences
+from speeding or using their phones, most do not know how quickly everything can escalate into
+tragedy.<p>
+
+<div class="divider" aria-hidden="true">• • •</div>
+
+      <p> Another consequence of intersection crashes is the emotional and psychological
+damage sustained by witnesses or survivors of these accidents. Those drivers who have been
+involved in a serious accident either as participants or bystanders can suffer from anxiety and
+trauma, or even phobia, related to driving. Such consequences will make it hard for them to live
+with routine activities or travel to places for work every day. The victims' families have to grieve,
+and this situation might negatively affect their mental condition. Certain streets and intersections
+might be considered hazardous by the members of local communities, which in turn, can lead to
+shifts in the existing traffic patterns. </p>
+
+      <p> In summary, it is shown that fatal crashes at intersections within the state of Arizona are a
+serious problem that requires immediate action. This type of accident results from risky driving
+habits and insufficient road safety. Collisions lead to serious injuries and fatalities. This means
+that if drivers are not educated on the importance of following traffic laws and if the problem of
+road safety is not tackled in time, it might escalate into something worse. For this reason, people
+living in Arizona, particularly young drivers, should be made aware of this problem. </p>
+
+
+  </article>
+
+  <section class="author-bio" aria-label="About the author">
+    <img src="https://www.image2url.com/r2/default/images/1776223412780-9a46287c-527e-49bf-8b68-2d1b66237003.png" alt="Portrait of Wren Alcott" />
+    <div class="info">
+      <div class="written-by">Written by</div>
+      <h3>Jordan Dungca</h3>
+      <p> \(-_-)/</p>
+      <button class="btn btn-accent" type="button">Follow</button>
+    </div>
+  </section>
+
+  <figure class="hero">
+    <img src="https://www.image2url.com/r2/default/images/1776224739965-009dfee7-0160-43e6-bb50-1de98e38fee0.png" alt="A quiet rain-soaked valley at first light, mist threading between dark pines." />
+    <figcaption>"While traffic laws and signals are designed to keep you safe, new data reveals a troubling trend." - Archer, Garrett </figcaption>
+  </figure>
+
+  <section class="more-from" aria-label="More from Southern Winds">
+    <h2>Works Cited</h2>
+    <div class="card-grid">
+      <a href="https://www.abc15.com/news/state/arizona-has-highest-rate-of-fatal-intersection-crashes-in-the-country" class="card" target="_blank" rel="noopener" aria-label="Open ABC15 article in a new tab">
+        <img src="https://www.image2url.com/r2/default/images/1776223066812-0518855f-9997-4bc2-b4f1-d57d46ace828.png" alt="A field at dusk with long grass and low clouds." />
+        <div class="pub-small"><span class="dot">A</span> ABC15</div>
+        <h3>Arizona's Fatal Intersection Crashes</h3>
+        <p>Click to Visit</p>
+        <div class="card-meta">ABC15 · ARTICLE · MEDIA</div>
+      </a>
+
+      <a href="https://azdot.gov/sites/default/files/2025-07/2024-Crash-Facts.pdf" class="card" target="_blank" rel="noopener" aria-label="Open ADOT crash facts PDF in a new tab">
+        <img src="https://www.image2url.com/r2/default/images/1776222990126-851ab7df-00c6-4ade-b4f8-11af2e8fdb52.png" alt="A river curving between winter-bare trees." />
+        <div class="pub-small"><span class="dot">DO</span> Arizona Department of Transportation</div>
+        <h3>Motor Vehicle Crash Facts</h3>
+        <p>Click to Visit</p>
+        <div class="card-meta">ADOT · CRASH REPORT</div>
+      </a>
+
+      <a href="https://www.nhtsa.gov/risky-driving/distracted-driving" class="card" target="_blank" rel="noopener" aria-label="Open NHTSA distracted driving page in a new tab">
+        <img src="https://www.image2url.com/r2/default/images/1776222078957-a299cff7-d509-43d3-abd6-d53e42bde918.png" alt="An old orchard at first snow." />
+        <div class="pub-small"><span class="dot">NHS</span> National Highway Traffic Safety Administration</div>
+        <h3>Distracted Driving</h3>
+        <p>Click to Visit</p>
+        <div class="card-meta">NHTSA · ARTICLE</div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>© 2026 Jordan Dungca · Deadly Intersections</p>
+</footer>
+
+<script>
+  // Reading progress bar
+  const progressBar = document.getElementById('progress-bar');
+  function updateProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  // Clap button
+  const clapBtn = document.getElementById('clapBtn');
+  const clapCount = document.getElementById('clapCount');
+  let claps = 128;
+  clapBtn.addEventListener('click', () => {
+    claps += 1;
+    clapCount.textContent = claps.toLocaleString();
+    clapBtn.classList.remove('pop');
+    // force reflow to restart animation
+    void clapBtn.offsetWidth;
+    clapBtn.classList.add('pop');
+  });
+</script>
+
+</body>
+</html>
